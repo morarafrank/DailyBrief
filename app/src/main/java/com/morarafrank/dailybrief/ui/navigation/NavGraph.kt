@@ -26,25 +26,48 @@ fun NewsNavGraph(
         composable(
             route = Screens.FullNewsScreen.route
         ){
-            FullNewsScreen()
+            FullNewsScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
 
         composable(
             route = Screens.HeadlinesScreen.route
         ) {
-            HeadlinesScreen()
+            HeadlinesScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
 
         composable(
             route = Screens.HomeScreen.route
         ) {
-             HomeScreen()
+             HomeScreen(
+                navigateToHeadlinesScreen = {
+                    navController.navigate(Screens.HeadlinesScreen.route)
+                },
+                navigateToLatestNewsScreen = {
+                    navController.navigate(Screens.LatestNewsScreen.route)
+                },
+
+                 navigateToSingleArticle = {
+                        navController.navigate(Screens.FullNewsScreen.route)
+                 }
+             )
         }
 
         composable(
             route = Screens.LatestNewsScreen.route
         ){
-            LatestNewsScreen()
+            LatestNewsScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
 
     }
