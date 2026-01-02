@@ -40,7 +40,7 @@ fun HeadlinesItemCard(
     val context = LocalContext.current
     Card(
         modifier = modifier
-            .size(250.dp)
+            .size(270.dp)
             .clickable {
                 onClick(newsArticle.url ?: "")
             }

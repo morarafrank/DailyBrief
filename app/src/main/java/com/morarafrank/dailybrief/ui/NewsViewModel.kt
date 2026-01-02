@@ -4,12 +4,16 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.morarafrank.dailybrief.data.repo.NewsRepository
+import com.morarafrank.dailybrief.domain.model.Article
 import com.morarafrank.dailybrief.utils.NewsUiState
 import com.morarafrank.dailybrief.utils.SourcesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +35,26 @@ class NewsViewModel @Inject constructor (
     private val _sourcesUiState = MutableStateFlow<SourcesUiState>(SourcesUiState.Idle)
     val sourcesUiState: StateFlow<SourcesUiState> = _sourcesUiState.asStateFlow()
 
+    private val _articles = MutableStateFlow<List<Article>>(emptyList())
+    val articles: StateFlow<List<Article>> = _articles
+
+    private val _selectedNewsArticleId = MutableStateFlow<String?>(null)
+    val selectedNewsArticleId: StateFlow<String?> = _selectedNewsArticleId
+
+    val selectedNewsArticle: StateFlow<Article?> =
+        combine(_articles, _selectedNewsArticleId) { articles, url ->
+            articles.find { it.url == url }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000L),
+            null
+        )
+
+
+    fun selectNewsArticle(articleUrl: String) {
+        Log.i("NewsArticlesViewModel", "Selected articleUrl: $articleUrl")
+        _selectedNewsArticleId.value = articleUrl
+    }
 
 
     // Everything News
@@ -44,6 +68,8 @@ class NewsViewModel @Inject constructor (
                     .isSuccessful.let { response ->
                     if (response) {
                         val newsArticles = newsRepository.getAllNews(query).body()?.articles ?: emptyList()
+
+                        _articles.value = newsArticles
                         _newsUiState.value = NewsUiState.Success(newsArticles)
                     } else {
                         throw Exception(

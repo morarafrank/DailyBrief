@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.morarafrank.dailybrief.ui.screens.FullNewsScreen
 import com.morarafrank.dailybrief.ui.screens.HeadlinesScreen
 import com.morarafrank.dailybrief.ui.screens.HomeScreen
@@ -24,9 +26,17 @@ fun NewsNavGraph(
     ) {
 
         composable(
-            route = Screens.FullNewsScreen.route
-        ){
+            route = "${Screens.FullNewsScreen.route}/{articleUrl}",
+            arguments = listOf(
+                navArgument("articleUrl") {
+                    type = NavType.StringType
+                }
+            )
+        ){ backStackEntry ->
+
+            val articleUrl = backStackEntry.arguments?.getString("articleUrl") ?: ""
             FullNewsScreen(
+                articleUrl = articleUrl,
                 navigateBack = {
                     navController.navigateUp()
                 }
@@ -54,8 +64,10 @@ fun NewsNavGraph(
                     navController.navigate(Screens.LatestNewsScreen.route)
                 },
 
-                 navigateToSingleArticle = {
-                        navController.navigate(Screens.FullNewsScreen.route)
+                 navigateToSingleArticle = { articleUrl ->
+                        navController.navigate(
+                            "${Screens.FullNewsScreen.route}/$articleUrl"
+                        )
                  }
              )
         }

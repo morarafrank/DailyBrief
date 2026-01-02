@@ -48,7 +48,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToHeadlinesScreen: () -> Unit,
     navigateToLatestNewsScreen: () -> Unit,
-    navigateToSingleArticle: (String) -> Unit,
+    navigateToSingleArticle: (articleUrl: String) -> Unit,
     viewModel: NewsViewModel = hiltViewModel()
 ) {
 
@@ -171,6 +171,7 @@ fun HomeScreen(
                                 HeadlinesItemCard(
                                     newsArticle = headline,
                                     onClick = {
+                                        viewModel.selectNewsArticle(headline.url ?: "")
                                         navigateToSingleArticle(it)
                                     }
                                 )
@@ -231,6 +232,7 @@ fun HomeScreen(
                                 NewsItemCard(
                                     newsArticle = article,
                                     onClick = {
+                                        viewModel.selectNewsArticle(article.url ?: "")
 //                                    onClickArticle(it)
                                         navigateToSingleArticle(it)
                                     }
