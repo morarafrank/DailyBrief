@@ -32,30 +32,28 @@ interface NewsApiService {
     @GET("everything")
     suspend fun searchNews(
         @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
-        @Query("q") q: String,
-        @Query("searchIn") searchIn: String? = "title, description, content",
-        @Query("sources") sources: Source?=null,
-        @Query("sortBy") sortBy: String? = "relevancy",
+        @Query("q") q: String, // REQUIRED
+        @Query("searchIn") searchIn: String? = "title,description,content",
+        @Query("sortBy") sortBy: String? = "publishedAt",
         @Query("domains") domains: String? = null,
         @Query("excludeDomains") excludeDomains: String? = null,
         @Query("from") from: String? = null,
         @Query("to") to: String? = null,
         @Query("language") language: String? = "en",
-        @Query("pageSize") pageSize: Int?=100,
-        @Query("page") page: Int?=1
-
+        @Query("pageSize") pageSize: Int? = 100,
+        @Query("page") page: Int? = 1
     ): Response<ArticleResponse>
 
 //    Top-headlines
-    @GET("top-headlines")
-    suspend fun getTopHeadlines(
-        @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
-        @Query("country") country: String? = "us",
-        @Query("category") category: String? = "general",
-        @Query("sources") sources: String?=null,
-        @Query("q") q: String? = null,
-        @Query("pageSize") pageSize: Int?=100,
-        @Query("page") page: Int?=1
+@GET("top-headlines")
+suspend fun getTopHeadlines(
+    @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
+    @Query("country") country: String = "us",
+    @Query("category") category: String = "general",
+    @Query("sources") sources: String? = null,
+    @Query("q") q: String? = null,
+    @Query("pageSize") pageSize: Int? = 100,
+    @Query("page") page: Int? = 1
 ): Response<ArticleResponse>
 
 

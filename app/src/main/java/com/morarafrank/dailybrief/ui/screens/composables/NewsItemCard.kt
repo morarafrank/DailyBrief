@@ -69,19 +69,12 @@ fun NewsItemCard(
                 modifier = modifier
                     .size(80.dp)
                     .padding(2.dp),
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Fit,
                 placeholder = painterResource(com.morarafrank.dailybrief.R.drawable.placeholder_image),
                 error = painterResource(com.morarafrank.dailybrief.R.drawable.broken_image)
             )
 
 
-//            Image(
-//                painter = painterResource(com.morarafrank.dailybrief.R.drawable.img),
-//                contentDescription = null,
-//                modifier = modifier.size(80.dp)
-//                    .padding(2.dp),
-//                contentScale = ContentScale.FillBounds
-//            )
             Column(
                 modifier = modifier.fillMaxWidth().padding(4.dp),
                 verticalArrangement = Arrangement.spacedBy(

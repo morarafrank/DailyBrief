@@ -24,6 +24,9 @@ class NewsViewModel @Inject constructor (
     private val _newsUiState = MutableStateFlow<NewsUiState>(NewsUiState.Idle)
     val newsUiState: StateFlow<NewsUiState> = _newsUiState.asStateFlow()
 
+    private val _headlinesUiState = MutableStateFlow<NewsUiState>(NewsUiState.Idle)
+    val headlinesUiState: StateFlow<NewsUiState> = _headlinesUiState.asStateFlow()
+
     // sources ui state
     private val _sourcesUiState = MutableStateFlow<SourcesUiState>(SourcesUiState.Idle)
     val sourcesUiState: StateFlow<SourcesUiState> = _sourcesUiState.asStateFlow()
@@ -63,7 +66,7 @@ class NewsViewModel @Inject constructor (
     }
 
     // Search News
-    fun searchNews(query: String) = viewModelScope.launch {
+    fun searchNewsArticles(query: String) = viewModelScope.launch {
         _newsUiState.value = NewsUiState.Loading
         try {
             newsRepository.searchNews(query).isSuccessful.let { response ->
@@ -83,12 +86,12 @@ class NewsViewModel @Inject constructor (
 
     // Top Headlines
     fun getTopHeadlines() = viewModelScope.launch {
-        _newsUiState.value = NewsUiState.Loading
+        _headlinesUiState.value = NewsUiState.Loading
         try {
             newsRepository.getTopHeadlines().isSuccessful.let { response ->
                 if (response) {
                     val newsArticles = newsRepository.getTopHeadlines().body()?.articles ?: emptyList()
-                    _newsUiState.value = NewsUiState.Success(newsArticles)
+                    _headlinesUiState.value = NewsUiState.Success(newsArticles)
                 } else {
                     throw Exception("Error fetching top headlines: ${newsRepository.getTopHeadlines().errorBody()?.string()}")
                 }
@@ -96,7 +99,7 @@ class NewsViewModel @Inject constructor (
 
         } catch (e: Exception) {
             Log.e("NewsViewModel", "getTopHeadlines: ${e.localizedMessage}", )
-            _newsUiState.value = NewsUiState.Error(e.localizedMessage ?: "An unexpected error occurred")
+            _headlinesUiState.value = NewsUiState.Error(e.localizedMessage ?: "An unexpected error occurred")
         }
     }
 
