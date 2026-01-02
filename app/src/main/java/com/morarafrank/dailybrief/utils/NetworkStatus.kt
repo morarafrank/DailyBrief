@@ -1,4 +1,4 @@
-package com.morarafrank.skycast.utils
+package com.morarafrank.dailybrief.utils
 
 enum class NetworkStatus {
     ONLINE,

@@ -1,4 +1,6 @@
 package com.morarafrank.skycast.utils
+import com.morarafrank.dailybrief.domain.model.Article
+import com.morarafrank.dailybrief.domain.model.Source
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,3 +53,4 @@ object UiUtils {
 
 
 }
+
