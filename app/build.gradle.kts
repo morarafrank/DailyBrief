@@ -18,14 +18,16 @@ val apiKey: String = project.rootProject.file("local.properties")
 
 android {
     namespace = "com.morarafrank.dailybrief"
-    compileSdk {
-        version = release(36)
-    }
+//    compileSdk {
+//        version = release(35)
+//    }
+
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.morarafrank.dailybrief"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

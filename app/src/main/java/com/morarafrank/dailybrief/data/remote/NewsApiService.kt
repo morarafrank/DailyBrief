@@ -15,19 +15,18 @@ interface NewsApiService {
     @GET("everything")
     suspend fun getAllNews(
         @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
-        @Query("q") q: String? = null,
-        @Query("searchIn") searchIn: String? = "title, description, content",
-        @Query("sources") sources: Source?=null,
+        @Query("q") q: String, // REQUIRED
+        @Query("searchIn") searchIn: String? = "title,description,content",
         @Query("sortBy") sortBy: String? = "publishedAt",
         @Query("domains") domains: String? = null,
         @Query("excludeDomains") excludeDomains: String? = null,
         @Query("from") from: String? = null,
         @Query("to") to: String? = null,
         @Query("language") language: String? = "en",
-        @Query("pageSize") pageSize: Int?=100,
-        @Query("page") page: Int?=1
-
+        @Query("pageSize") pageSize: Int? = 100,
+        @Query("page") page: Int? = 1
     ): Response<ArticleResponse>
+
 
     // Search News from Everything endpoint.
     @GET("everything")

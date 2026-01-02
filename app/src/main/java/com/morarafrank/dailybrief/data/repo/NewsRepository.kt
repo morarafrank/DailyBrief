@@ -13,10 +13,14 @@ class NewsRepository @Inject constructor(
     val newsApi: NewsApiService
 ){
 
-    suspend fun getAllNews(): Response<ArticleResponse> {
+    suspend fun getAllNews(
+        query: String
+    ): Response<ArticleResponse> {
 
         return try {
-            newsApi.getAllNews()
+            newsApi.getAllNews(
+                q = query
+            )
         }catch (e: Exception){
             Log.e("NewsRepository", "getAllNews: ${e.localizedMessage}", )
             throw e

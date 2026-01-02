@@ -11,9 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class NewsViewModel (
+class NewsViewModel @Inject constructor (
     private val newsRepository: NewsRepository
 ): ViewModel(){
     init {
@@ -28,18 +29,22 @@ class NewsViewModel (
     val sourcesUiState: StateFlow<SourcesUiState> = _sourcesUiState.asStateFlow()
 
 
+
     // Everything News
-    fun getAllNews() {
+    fun getAllNews(
+        query: String
+    ) {
         viewModelScope.launch {
             _newsUiState.value = NewsUiState.Loading
             try {
-                newsRepository.getAllNews().isSuccessful.let { response ->
+                newsRepository.getAllNews(query)
+                    .isSuccessful.let { response ->
                     if (response) {
-                        val newsArticles = newsRepository.getAllNews().body()?.articles ?: emptyList()
+                        val newsArticles = newsRepository.getAllNews(query).body()?.articles ?: emptyList()
                         _newsUiState.value = NewsUiState.Success(newsArticles)
                     } else {
                         throw Exception(
-                            "Error fetching news: ${newsRepository.getAllNews().errorBody()?.string()}"
+                            "Error fetching news: ${newsRepository.getAllNews(query).errorBody()?.string()}"
                         )
                     }
                 }
